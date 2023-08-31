@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 
@@ -31,7 +32,11 @@ public class Main {
 
         for (int i = left; i <= right; i++) {
             arr[i] = sortedArr[i];
-            if (++cnt == K) bw.write(arr[i] + "");
+            if (++cnt == K) {
+                bw.write(arr[i] + "");
+                bw.close();
+                System.exit(0);
+            }
         }
 
     }
