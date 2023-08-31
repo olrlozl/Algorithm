@@ -8,13 +8,14 @@ public class Main {
 	public static int[] dR = { -2, -1, 1, 2, 2, 1, -1, -2 };
 	public static int[] dC = { 1, 2, 2, 1, -1, -2, -2, -1 };
 
-	public static void bfs(int[][] arr, int curR, int curC, int N) {
+	public static void bfs(int[][] arr, int curR, int curC, int goalR, int goalC, int N) {
 		Queue<Point> queue = new LinkedList<>(); // 큐
 		queue.add(new Point(curR, curC)); // 시작 위치를 큐에 넣고
 		arr[curR][curC] = 1; // 시작 위치를 방문 처리 (시작 위치를 다시 방문하지 못하도록 1로 설정했기 때문에 최소 이동 횟수 구할 때 1 빼야됨)
 		
 		while (!queue.isEmpty()) { // 큐가 빌 때 까지
 			Point node = queue.poll(); // 큐에서 원소 하나를 꺼내고
+			if (goalR == node.x && goalC == node.y) break; // 목표지점에 도달했다면 break
 			for (int d = 0; d < 8; d++) {
 				int nR = node.x + dR[d];
 				int nC = node.y + dC[d];
@@ -47,7 +48,7 @@ public class Main {
 
 			int[][] arr = new int[N][N]; // 체스판 2차원 배열
 			
-			bfs(arr, curR, curC, N);
+			bfs(arr, curR, curC, goalR, goalC, N);
 			
 			bw.write(arr[goalR][goalC] - 1 + "\n");
 		}
