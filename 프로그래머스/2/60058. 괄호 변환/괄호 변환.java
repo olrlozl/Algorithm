@@ -4,9 +4,7 @@ class Solution {
         public Boolean isRight(String str) {
         Stack<Character> stack = new Stack<>();
         for (char c : str.toCharArray()) {
-            if (c == '(') {
-                stack.add(c);
-            }
+            if (c == '(') stack.add(c);
             else {
                 if (stack.isEmpty()) return false;
                 stack.pop();
@@ -37,12 +35,9 @@ class Solution {
     }
     public String solution(String p) {
         if (p.isEmpty()) return p; // 1. 빈 문자열인 경우, 빈 문자열을 반환
-
         String[] uv = seperate(p); // 2. p를 두 "균형잡힌 괄호 문자열" u, v로 분리
 
-        // 3. u가 "올바른 괄호 문자열" 이라면
-        if (isRight(uv[0])) return uv[0] + solution(uv[1]);
-        // 4. u가 "올바른 괄호 문자열"이 아니라면
-        else return "(" + solution(uv[1]) + ")" + reverse(uv[0]);
+        if (isRight(uv[0])) return uv[0] + solution(uv[1]); // 3. u가 "올바른 괄호 문자열" 이라면
+        else return "(" + solution(uv[1]) + ")" + reverse(uv[0]); // 4. u가 "올바른 괄호 문자열"이 아니라면
     }
 }
