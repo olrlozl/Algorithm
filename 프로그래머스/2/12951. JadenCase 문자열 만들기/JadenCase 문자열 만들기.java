@@ -1,15 +1,14 @@
-import java.util.stream.*;
-
 class Solution {
     public String solution(String s) {
-        String result = "";
+        String answer = "";
+        String[] sp = s.toLowerCase().split("");
         boolean flag = true;
 
-        for (char c : s.toLowerCase().toCharArray()) {
-            result += flag ? Character.toUpperCase(c) : c;
-            flag = c == ' ';
+        for(String ss : sp) {
+            answer += flag ? ss.toUpperCase() : ss;
+            flag = ss.equals(" ") ? true : false;
         }
-        
-        return result;
+
+        return answer;
     }
 }
