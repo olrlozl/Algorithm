@@ -1,13 +1,10 @@
 class Solution {
     public long solution(int n) {
         if (n <= 2) return n;
-        int a = 1;
-        int b = 2;
-        for (int i = 0; i < n - 2; i++) {
-            int tmp = a;
-            a = b;
-            b = (tmp + a) % 1234567;
-        }
-        return b;
+        long[] fibo = new long[n];
+        fibo[0] = 1;
+        fibo[1] = 2;
+        for (int i = 2; i < n; i++) fibo[i] = (fibo[i-2] + fibo[i-1]) % 1234567;
+        return fibo[n-1];
     }
 }
