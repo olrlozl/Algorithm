@@ -12,26 +12,32 @@ public class Main {
 
     public static void bfs(Point start) {
         Queue<Point> queue = new LinkedList<>();
-        int[][] visit = new int[h][w];
+        boolean[][] visit = new boolean[h][w];
+        int depth = 0;
 
         queue.add(start); // 시작 정점을 큐에 넣고
-        visit[start.x][start.y] = 1; // 시작정점을 방문처리
+        visit[start.x][start.y] = true; // 시작정점을 방문처리
 
         while (!queue.isEmpty()) { // 큐가 빌 때 까지
-            Point point = queue.poll(); // 큐에서 원소 하나를 꺼내고
+            int length = queue.size();
 
-            for (int d = 0; d < 4; d++) {
-                int nh = point.x + delta[d][0];
-                int nw = point.y + delta[d][1];
+            for (int i = 0; i < length; i++) {
+                Point point = queue.poll(); // 큐에서 원소 하나를 꺼내고
 
-                // 이웃한 육지 중에서 방문하지 않았다면
-                if (0 <= nh && nh < h && 0 <= nw && nw < w && arr[nh][nw] == 'L' && visit[nh][nw] == 0) {
-                    queue.add(new Point(nh, nw)); // 큐에 넣고
-                    visit[nh][nw] = visit[point.x][point.y] + 1; // 방문처리
-                    maxTime = Math.max(visit[nh][nw] - 1, maxTime);
+                for (int d = 0; d < 4; d++) {
+                    int nh = point.x + delta[d][0];
+                    int nw = point.y + delta[d][1];
+
+                    // 이웃한 육지 중에서 방문하지 않았다면
+                    if (0 <= nh && nh < h && 0 <= nw && nw < w && arr[nh][nw] == 'L' && !visit[nh][nw]) {
+                        queue.add(new Point(nh, nw)); // 큐에 넣고
+                        visit[nh][nw] = true; // 방문처리
+                    }
                 }
             }
+            depth++;
         }
+        maxTime = Math.max(depth - 1, maxTime);
     }
 
     public static void main(String[] args) throws IOException {
