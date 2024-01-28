@@ -14,7 +14,7 @@ class Solution {
                 if (list.size() == cacheSize) list.remove(0);
                 time += 5;
             } else {
-                list.remove(list.indexOf(city));
+                list.remove(city);
                 time += 1;
             }
             list.add(city);
