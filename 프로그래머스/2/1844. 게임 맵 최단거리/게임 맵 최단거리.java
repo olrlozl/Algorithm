@@ -11,7 +11,7 @@ class Solution {
         queue.add(new Point(0, 0));
         maps[0][0]++;
         
-        while(!queue.isEmpty()) {
+        loop: while(!queue.isEmpty()) {
             Point now = queue.poll();
             for (int d = 0; d < 4; d++) {
                 int nr = now.x + delta[d][0];
@@ -19,12 +19,9 @@ class Solution {
                 if (0 <= nr && nr < maps.length && 0 <= nc && nc < maps[0].length && maps[nr][nc] == 1) {
                     queue.add(new Point(nr, nc));
                     maps[nr][nc] += maps[now.x][now.y];
+                    if (nr == maps.length - 1 && nc == maps[0].length - 1) break loop;
                 }
             }
-        }
-        
-        for (int i = 0; i < maps.length; i++) {
-            System.out.println(Arrays.toString(maps[i]));
         }
         
         if (maps[maps.length-1][maps[0].length-1] == 1) return -1;
