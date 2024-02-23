@@ -2,9 +2,9 @@ import java.util.*;
 
 class Solution {
     public int solution(String s) {
-        int min = Integer.MAX_VALUE;
+        int min = s.length();
         
-        for (int len = 1; len <= s.length(); len++) {
+        for (int len = 1; len <= s.length() / 2; len++) {
              String res = "";
             Queue<String> queue = new LinkedList<>();
 
