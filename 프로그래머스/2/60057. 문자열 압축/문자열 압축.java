@@ -5,7 +5,7 @@ class Solution {
         int min = s.length();
         
         for (int len = 1; len <= s.length() / 2; len++) {
-             String res = "";
+             StringBuilder res = new StringBuilder();
             Queue<String> queue = new LinkedList<>();
 
             for (int i = 0; i < s.length(); i+=len) {
@@ -19,9 +19,9 @@ class Solution {
                         queue.add(now);
                     } else {
                         if (queue.size() == 1) {
-                            res += queue.poll();
+                            res.append(queue.poll());
                         } else if (queue.size() > 1) {
-                            res += Integer.toString(queue.size()) + queue.peek();
+                            res.append(Integer.toString(queue.size()) + queue.peek());
                             queue.clear();
                         }
                         queue.add(now);
@@ -29,10 +29,10 @@ class Solution {
                 }
             }
             
-            if (queue.size() == 1) res += queue.poll();
-            else if (queue.size() > 1) res += Integer.toString(queue.size()) + queue.peek();
+            if (queue.size() == 1) res.append(queue.poll());
+            else if (queue.size() > 1) res.append(Integer.toString(queue.size()) + queue.peek());
             
-            min = Math.min(min, res.length());
+            min = Math.min(min, res.toString().length());
         }
        
         return min;
