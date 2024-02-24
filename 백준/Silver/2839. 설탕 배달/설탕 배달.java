@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -8,16 +9,19 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
 
-        int total = n / 5;
-        n %= 5;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, 987654321);
+        dp[0] = 0;
 
-        if (n == 3) total += 1;
-        else if (total > 0 && (n == 1 || n == 4)) total += -1 + (n + 5) / 3;
-        else if (total > 1 && n == 2) total += -2 + (n + 10) / 3;
-        else if (n != 0) total = -1;
+        int[] kind = {3, 5};
 
-        bw.write(total + "");
+        for (int i = 0; i < kind.length; i++) {
+            for (int j = kind[i]; j <= n; j++) {
+                dp[j] = Math.min(dp[j], dp[j - kind[i]] + 1);
+            }
+        }
+        
+        bw.write((dp[n] == 987654321 ? -1 : dp[n]) + "");
         bw.close();
-
     }
 }
