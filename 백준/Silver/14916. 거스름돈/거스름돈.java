@@ -6,23 +6,16 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int n = Integer.parseInt(br.readLine());
+        int total = 0;
 
-        int five = n / 5;
-        int two = 0;
+        total += n / 5;
+        n %= 5;
 
-        if (n % 5 != 0) {
-            two = (n - 5 * five) / 2;
-            while ((n - 5 * five) % 2 != 0) {
-                five -= 1;
-                if (five < 0) {
-                    two = 0;
-                    break;
-                }
-                two = (n - 5 * five) / 2;
-            }
-        }
+        if (n % 2 == 0) total += n / 2;
+        else if (total > 0 && n % 2 == 1) total += -1 + (n + 5) / 2;
+        else total = -1;
 
-        bw.write(five + two + "");
+        bw.write(total + "");
         bw.close();
     }
 }
