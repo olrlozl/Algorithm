@@ -5,8 +5,7 @@ class Solution {
         
         List<String> dic = new ArrayList<>();
         dic.add("");
-        char ch = 'A';
-        for (int i = 0; i < 26; i++) dic.add(String.valueOf(ch++)); 
+        for (int i = 0; i < 26; i++) dic.add(String.valueOf((char)('A' + i))); 
         
         List<Integer> list = new ArrayList<>();
         StringBuilder sb = new StringBuilder(msg);
