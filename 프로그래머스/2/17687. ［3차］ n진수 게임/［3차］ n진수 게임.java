@@ -1,17 +1,18 @@
 class Solution {
     public String solution(int n, int t, int m, int p) {
-        String answer = "";
+        
+        StringBuilder answer = new StringBuilder();
+        StringBuilder tube = new StringBuilder();
         int num = 0;
         
         while (answer.length() < t * m) {
-            answer += Integer.toString(num++, n).toUpperCase();    
+            answer.append(Integer.toString(num++, n).toUpperCase());
         }
-        
-        String tube = "";
+
         for (int i = 0; i < t; i++) {
-            tube += answer.charAt(i * m + p - 1);
+            tube.append(answer.charAt(i * m + p - 1));
         }
         
-        return tube;
+        return tube.toString();
     }
 }
