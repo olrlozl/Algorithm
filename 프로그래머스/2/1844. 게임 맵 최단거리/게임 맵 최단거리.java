@@ -2,29 +2,36 @@ import java.util.*;
 import java.awt.*;
 
 class Solution {
-    public int[][] delta = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    public int[][] delta = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}}; // 하 우 상 좌
     
-    public int solution(int[][] maps) {
-        
+    public void bfs(int[][] maps, Point start) {
         Queue<Point> queue = new LinkedList<>();
         
-        queue.add(new Point(0, 0));
-        maps[0][0]++;
+        queue.add(start);
+        maps[start.x][start.y]++;
         
-        loop: while(!queue.isEmpty()) {
-            Point now = queue.poll();
-            for (int d = 0; d < 4; d++) {
-                int nr = now.x + delta[d][0];
-                int nc = now.y + delta[d][1];
-                if (0 <= nr && nr < maps.length && 0 <= nc && nc < maps[0].length && maps[nr][nc] == 1) {
+        while (!queue.isEmpty()) {
+            Point point = queue.poll();
+            
+            for (int i = 0; i < 4; i++) {
+                int nr = point.x + delta[i][0];
+                int nc = point.y + delta[i][1];
+                
+                if (0 <= nr && nr < maps.length && 0 <= nc && nc < maps[0].length 
+                    && maps[nr][nc] == 1) {
                     queue.add(new Point(nr, nc));
-                    maps[nr][nc] += maps[now.x][now.y];
-                    if (nr == maps.length - 1 && nc == maps[0].length - 1) break loop;
+                    maps[nr][nc] += maps[point.x][point.y];
+                    
+                    if (nr == maps.length && nc == maps[0].length) return;
                 }
             }
         }
+    }
+    
+    public int solution(int[][] maps) {
+        bfs(maps, new Point(0, 0));
         
-        if (maps[maps.length-1][maps[0].length-1] == 1) return -1;
-        return maps[maps.length-1][maps[0].length-1] - 1;
+        if (maps[maps.length - 1][maps[0].length - 1] == 1) return -1;
+        return maps[maps.length - 1][maps[0].length - 1] - 1;
     }
 }
