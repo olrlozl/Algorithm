@@ -6,7 +6,7 @@ class Solution {
         int l = 0;
         int r = 0;
         
-        while (l <= r && r < sequence.length) {
+        while (true) {
             if (sum == k) {
                 if (result[1] - result[0] > r - l) {
                     result[0] = l;
