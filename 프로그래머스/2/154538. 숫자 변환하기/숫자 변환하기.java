@@ -1,18 +1,42 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int x, int y, int n) {
+    public Queue<Integer> queue = new LinkedList<Integer>();
+    public boolean[] visit;
+    
+    public int bfs(int x, int y, int n) {
+        queue.add(x);
+        visit[x] = true;
+        int cnt = 0;
         
-        int[] dp = new int[y + 1];
-        Arrays.fill(dp, y);
-        dp[x] = 0;
-        
-        for (int i = x; i <= y; i++) {
-            if (i + n <= y) dp[i + n] = Math.min(dp[i] + 1, dp[i + n]);
-            if (i * 2 <= y) dp[i * 2] = Math.min(dp[i] + 1, dp[i * 2]);
-            if (i * 3 <= y) dp[i * 3] = Math.min(dp[i] + 1, dp[i * 3]);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            
+            for (int i = 0; i < size; i++) {
+                int cur = queue.poll();
+                if (cur == y) {
+                    return cnt;
+                }
+                addQueue(cur + n, y);
+                addQueue(cur * 2, y);
+                addQueue(cur * 3, y);
+            }
+            
+            cnt++;
         }
         
-        return dp[y] == y ? -1 : dp[y];
+        return -1;
+    }
+    
+    public void addQueue(int a, int y) {
+        if (a <= y && !visit[a]) {
+            queue.add(a);
+            visit[a] = true;
+        }
+    }
+    
+    public int solution(int x, int y, int n) {
+        visit = new boolean[y + 1];
+        return bfs(x, y, n);
     }
 }
