@@ -4,23 +4,19 @@ class Solution {
 
         while (storey > 0) {
             int s = storey % 10;
-            
+
             if (s < 5) {
                 cnt += s;
-                storey -= s;
             } else if (s > 5) {
                 cnt += 10 - s;
-                storey += s;
+                storey += 10;
             } else {
-                if (storey / 10 % 10 < 5) {
-                    cnt += s;
-                    storey -= s;
-                } else {
-                    cnt += 10 - s;
-                    storey += s;
+                if (storey / 10 % 10 > 4) {
+                    storey += 10;
                 }
+                cnt += s;
             }
-
+            
             storey /= 10;
         }
          
