@@ -2,11 +2,11 @@ import java.util.*;
 
 class Solution {
     public Queue<Integer> queue = new LinkedList<Integer>();
-    public boolean[] visit;
+    public HashSet<Integer> visit = new HashSet<>();
     
     public int bfs(int x, int y, int n) {
         queue.add(x);
-        visit[x] = true;
+        visit.add(x);
         int cnt = 0;
         
         while (!queue.isEmpty()) {
@@ -29,14 +29,13 @@ class Solution {
     }
     
     public void addQueue(int a, int y) {
-        if (a <= y && !visit[a]) {
+        if (a <= y && !visit.contains(a)) {
             queue.add(a);
-            visit[a] = true;
+            visit.add(a);
         }
     }
     
     public int solution(int x, int y, int n) {
-        visit = new boolean[y + 1];
         return bfs(x, y, n);
     }
 }
