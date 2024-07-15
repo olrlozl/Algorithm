@@ -38,7 +38,7 @@ public class Main {
         int b = -1;
 
         for (int i = 0; i < N; i++) {
-            if (g != arr[i][1] || s != arr[i][2] || b != arr[i][3]) rank++;
+            if (g != arr[i][1] || s != arr[i][2] || b != arr[i][3]) rank = i + 1;
             if (arr[i][0] == K) break;
             g = arr[i][1];
             s = arr[i][2];
