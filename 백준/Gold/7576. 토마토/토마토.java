@@ -6,8 +6,8 @@ public class Main {
     public static int M; // 가로
     public static int N; // 세로
     public static int[][] arr; // 상자 속 토마토 정보
-    public static ArrayList<Point> ripe; // 익은 토마토
-    public static int unripe; // 익지 않은 토마토 개수
+    public static ArrayList<Point> ripe = new ArrayList<>();; // 익은 토마토
+    public static int unripe = 0; // 익지 않은 토마토 개수
     public static int day = 0; // 모든 토마토가 익기 위한 최소 일수
     public static int[][] delta = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
@@ -21,17 +21,12 @@ public class Main {
         N = Integer.parseInt(st.nextToken()); // 세로
 
         arr = new int[N][M];
-        ripe = new ArrayList<>(); // 익은 토마토
-        unripe = 0; // 익지 않은 토마토 개수
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
-                if (arr[i][j] == 1) {
-                    ripe.add(new Point(i, j));
-                } else if (arr[i][j] == 0) {
-                    unripe++;
-                }
+                if (arr[i][j] == 1) ripe.add(new Point(i, j));
+                else if (arr[i][j] == 0) unripe++;
             }
         }
 
@@ -42,7 +37,7 @@ public class Main {
 
     public static void bfs() {
         Queue<Point> queue = new LinkedList<>(ripe);
-
+        
         while (!queue.isEmpty()) {
             int len = queue.size();
             boolean flag = false;
