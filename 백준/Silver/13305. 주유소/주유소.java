@@ -7,9 +7,9 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
 
-        int N = Integer.parseInt(br.readLine()); // 도시 개수
-        int[] dist = new int[N - 1]; // 도로 길이 (필요한 기름)
-        int[] price = new int[N - 1]; // 리터당 가격
+        int N = Integer.parseInt(br.readLine()); // 도시 수
+        long[] dist = new long[N - 1]; // 거리
+        long[] cost = new long[N - 1]; // 비용
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N - 1; i++) {
@@ -18,25 +18,14 @@ public class Main {
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N - 1; i++) {
-            price[i] = Integer.parseInt(st.nextToken());
+            cost[i] = Integer.parseInt(st.nextToken());
         }
 
-        int result = 0;
-        int d = dist[0];
-        int p = price[0];
-        
+        long result = 0;
+        long minCost = cost[0];
         for (int i = 0; i < N - 1; i++) {
-            if (i == N - 2) { // 마지막 주유소일 때
-                result += d * p; // 지금까지 필요한 금액 정산
-                break; 
-            }
-            if (price[i] > price[i + 1]) { // 다음 주유소가 더 싸다!
-                result += d * p; // 지금까지 필요한 금액 정산
-                d = dist[i + 1];
-                p = price[i + 1];
-            } else { // 다음 주유소는 비싸
-                d += dist[i + 1]; // 다음에 필요한 기름을 미리 넣자
-            }
+            minCost = Math.min(minCost, cost[i]);
+            result += minCost * dist[i];
         }
 
         bw.write(result + "");
