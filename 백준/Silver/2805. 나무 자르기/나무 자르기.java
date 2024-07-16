@@ -22,17 +22,30 @@ public class Main {
             max = Math.max(max, arr[i]);
         }
 
-        while (min < max) {
+        int result = 0;
+
+        while (min <= max) {
             int mid = (min + max) / 2;
 
             long sum = 0;
-            for (int a : arr) if (a - mid > 0) sum += a - mid;
+            for (int a : arr) {
+                if (a - mid > 0) sum += a - mid;
+                if (sum > M) break;
+            }
 
-            if (sum < M) max = mid;
-            else min = mid + 1;
+            if (sum < M) {
+                max = mid - 1;
+            }
+            else if (sum > M) {
+                result = Math.max(result, mid);
+                min = mid + 1;
+            } else {
+                result = mid;
+                min = max + 1;
+            }
         }
 
-        bw.write((min - 1) + "");
+        bw.write(result + "");
         bw.close();
     }
 }
