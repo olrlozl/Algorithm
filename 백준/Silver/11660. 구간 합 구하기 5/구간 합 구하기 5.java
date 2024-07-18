@@ -12,26 +12,21 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        int[][] arr = new int[N][N];
-        for (int i = 0; i < N; i++) {
+        int[][] dp = new int[N + 1][N + 1];
+        for (int r = 1; r <= N; r++) {
             st = new StringTokenizer(br.readLine());
-            arr[i][0] = Integer.parseInt(st.nextToken());
-            for (int j = 1; j < N; j++) {
-                arr[i][j] = arr[i][j - 1] + Integer.parseInt(st.nextToken());
+            for (int c = 1; c <= N; c++) {
+                dp[r][c] = dp[r - 1][c] + dp[r][c - 1] - dp[r - 1][c - 1] + Integer.parseInt(st.nextToken());
             }
         }
 
-        for (int i = 0; i < M; i++) {
+        for (int i = 1; i <= M; i++) {
             st = new StringTokenizer(br.readLine());
-            int r1 = Integer.parseInt(st.nextToken()) - 1;
-            int c1 = Integer.parseInt(st.nextToken()) - 1;
-            int r2 = Integer.parseInt(st.nextToken()) - 1;
-            int c2 = Integer.parseInt(st.nextToken()) - 1;
-            int sum = 0;
-            for (int r = r1; r <= r2; r++) {
-                sum += arr[r][c2] - (c1 > 0 ? arr[r][c1 - 1] : 0);
-            }
-            bw.write(sum + "\n");
+            int r1 = Integer.parseInt(st.nextToken());
+            int c1 = Integer.parseInt(st.nextToken());
+            int r2 = Integer.parseInt(st.nextToken());
+            int c2 = Integer.parseInt(st.nextToken());
+            bw.write((dp[r2][c2] - dp[r1 - 1][c2] - dp[r2][c1 - 1] + dp[r1 - 1][c1 - 1]) + "\n");
         }
         bw.close();
     }
