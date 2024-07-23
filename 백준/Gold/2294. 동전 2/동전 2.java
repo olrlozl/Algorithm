@@ -5,25 +5,25 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken()); // 동전 종류 가짓수
-        int k = Integer.parseInt(st.nextToken()); // 동전 가치 합
-        
-        int[] coins = new int[n];
-        for (int c = 0; c < n; c++) coins[c] = Integer.parseInt(br.readLine());
-        
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) arr[i] = Integer.parseInt(br.readLine());
+
         int[] dp = new int[k + 1];
-        Arrays.fill(dp, 987654321);
+        Arrays.fill(dp, k + 1);
         dp[0] = 0;
-        
-        for (int c = 0; c < n; c++) {
-            for (int i = coins[c]; i <= k; i++) {
-                dp[i] = Math.min(dp[i], dp[i - coins[c]] + 1);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = arr[i]; j <= k; j++) {
+                dp[j] = Math.min(dp[j], dp[j - arr[i]] + 1);
             }
         }
-        
-        bw.write((dp[k] == 987654321 ? -1 : dp[k]) + "");
+
+        bw.write((dp[k] == k + 1 ? -1 : dp[k]) + "");
         bw.close();
     }
 }
