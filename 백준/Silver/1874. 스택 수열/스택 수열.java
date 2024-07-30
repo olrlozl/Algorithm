@@ -13,34 +13,20 @@ public class Main {
         int idx = 0;
         Stack<Integer> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
-        boolean pos = true;
 
         for (int i = 1; i <= N; i++) {
-            if (stack.isEmpty() || stack.peek() != arr[idx]) {
-                stack.add(i);
-                sb.append("+\n");
-                continue;
-            }
+            stack.add(i);
+            sb.append("+\n");
             while (!stack.isEmpty() && stack.peek() == arr[idx]) {
                 stack.pop();
                 sb.append("-\n");
                 idx++;
             }
-            stack.add(i);
-            sb.append("+\n");
         }
 
-        while (!stack.isEmpty()) {
-            if (stack.pop() == arr[idx++]) {
-                sb.append("-\n");
-            } else {
-                bw.write("NO");
-                pos = false;
-                break;
-            }
-        }
+        if (!stack.isEmpty()) bw.write("NO");
+        else bw.write(sb.toString());
 
-        if (pos) bw.write(sb.toString());
         bw.close();
     }
 }
