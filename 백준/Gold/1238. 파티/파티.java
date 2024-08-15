@@ -18,7 +18,7 @@ public class Main {
     }
 
     public static int[] Dijkstra(ArrayList<Edge>[] graph, int N, int start) {
-        PriorityQueue<Edge> pq = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.add(new Edge(start, 0));
 
         int[] dist = new int[N + 1];
@@ -53,11 +53,12 @@ public class Main {
         st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken()); // 학생 수, 마을 수
         int M = Integer.parseInt(st.nextToken()); // 단방향 도로 수
-        int X = Integer.parseInt(st.nextToken()); // 파티 마을
+        int X = Integer.parseInt(st.nextToken()); // 파티가 열리는 마을
 
-        @SuppressWarnings("unchecked")
+        ArrayList<Edge>[] r_graph = new ArrayList[N + 1];
         ArrayList<Edge>[] graph = new ArrayList[N + 1];
         for (int i = 1; i <= N; i++) {
+            r_graph[i] = new ArrayList<>();
             graph[i] = new ArrayList<>();
         }
 
@@ -66,17 +67,16 @@ public class Main {
             int to = Integer.parseInt(st.nextToken()); // 도로 시작점
             int from = Integer.parseInt(st.nextToken()); // 도로 도착점
             int t = Integer.parseInt(st.nextToken()); // 소요시간
-            graph[from].add(new Edge(to, t));
+            r_graph[to].add(new Edge(from, t)); // 역방향 그래프
+            graph[from].add(new Edge(to, t)); // 순방향 그래프
         }
 
-        int[][] time = new int[N + 1][N + 1];
-        for (int i = 1; i <= N; i++) {
-            time[i] = Dijkstra(graph, N, i);
-        }
+        int[] go = Dijkstra(r_graph, N, X); // 각 마을에서 출발하여 X 마을까지 가는 최소 거리
+        int[] back = Dijkstra(graph, N, X); // X 마을에서 출발하여 각 마을까지 가는 최소거리
 
         int max = 0;
         for (int i = 1; i <= N; i++) {
-            max = Math.max(max, time[i][X] + time[X][i]);
+            max = Math.max(max, go[i] + back[i]);
         }
 
         bw.write(max + "");
