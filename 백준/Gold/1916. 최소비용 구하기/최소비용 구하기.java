@@ -35,8 +35,8 @@ public class Main {
             visit[cur.idx] = true;
 
             for (Edge next : graph[cur.idx]) {
-                if (dist[next.idx] > dist[cur.idx] + next.cost) {
-                    dist[next.idx] = dist[cur.idx] + next.cost;
+                if (dist[next.idx] > cur.cost + next.cost) {
+                    dist[next.idx] = cur.cost + next.cost;
                     pq.add(new Edge(next.idx, dist[next.idx]));
                 }
             }
