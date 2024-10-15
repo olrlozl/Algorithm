@@ -15,7 +15,7 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
         nums = new int[N];
-        operators = new int[N - 1];
+        operators = new int[4];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
@@ -23,48 +23,33 @@ public class Main {
         }
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0, idx = 0; i < 4; i++) {
-            int x = Integer.parseInt(st.nextToken());
-            for (int j = 0; j < x; j++) {
-                operators[idx++] = i;
-            }
+        for (int i = 0; i < 4; i++) {
+            operators[i] = Integer.parseInt(st.nextToken());
         }
 
-        int[] tgt = new int[N - 1];
-        boolean[] visit = new boolean[N - 1];
-        duplicate_permutation(tgt, visit, 0);
+        dfs(nums[0], 1);
 
         bw.write(max + "\n" + min);
         bw.close();
     }
 
-    public static void duplicate_permutation(int[] tgt, boolean[] visit, int tgtIdx) {
-        if (tgtIdx == N - 1) {
-            circulate(tgt);
+    public static void dfs(int cur, int numIdx) {
+        if (numIdx == N) {
+            max = Math.max(max, cur);
+            min = Math.min(min, cur);
             return;
         }
 
-        boolean[] select = new boolean[4];
-        for (int i = 0; i < N - 1; i++) {
-            if (!visit[i] && !select[operators[i]]) {
-                tgt[tgtIdx] = operators[i];
-                select[operators[i]] = true;
-                visit[i] = true;
-                duplicate_permutation(tgt, visit, tgtIdx + 1);
-                visit[i] = false;
+        for (int i = 0; i < 4; i++) {
+            if (operators[i] > 0) {
+                operators[i]--;
+                if (i == 0) dfs(cur + nums[numIdx], numIdx + 1);
+                if (i == 1) dfs(cur - nums[numIdx], numIdx + 1);
+                if (i == 2) dfs(cur * nums[numIdx], numIdx + 1);
+                if (i == 3) dfs(cur / nums[numIdx], numIdx + 1);
+                operators[i]++;
             }
         }
-    }
 
-    public static void circulate(int[] tgt) {
-        int result = nums[0];
-        for (int i = 0; i < N - 1; i++) {
-            if (tgt[i] == 0) result += nums[i + 1];
-            else if (tgt[i] == 1) result -= nums[i + 1];
-            else if (tgt[i] == 2) result *= nums[i + 1];
-            else if (tgt[i] == 3) result /= nums[i + 1];
-        }
-        min = Math.min(min, result);
-        max = Math.max(max, result);
     }
 }
