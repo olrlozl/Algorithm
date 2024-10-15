@@ -2,47 +2,45 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    public static int[] time = new int[100001];
-    public static int count = 0;
-
-    public static void bfs (int n, int k) {
-        if (n == k) {
-            count = 1;
-            return;
-        }
-
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(n);
-
-        while (!queue.isEmpty()) {
-            int now = queue.poll();
-            int[] move = {now - 1, now + 1, 2 * now};
-
-            for (int next : move) {
-                if (0 <= next && next < 100001 && (time[next] == 0 || time[next] == time[now] + 1) && next != n) {
-                    queue.add(next);
-                    time[next] = time[now] + 1;
-                    if (next == k) count++;
-                }
-            }
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
 
-        st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        Queue<Integer> queue = new LinkedList<>();
+        int[] time = new int[100001];
 
-        bfs(n, k);
+        int cnt = 0;
+        boolean flag = false;
 
-        bw.write(time[k] + "\n");
-        bw.write(count + "");
+        queue.add(N);
+        time[N]++;
 
+        while (!queue.isEmpty()) {
+            int len = queue.size();
+
+            for (int i = 0; i < len; i++) {
+                int x = queue.poll();
+                if (x == K) {
+                    flag = true;
+                    cnt++;
+                }
+
+                int[] next = {x - 1, x + 1, 2 * x};
+                for (int n: next) {
+                    if (0 <= n && n <= 100000 && (time[n] == 0 || time[n] == time[x] + 1)) {
+                        time[n] = time[x] + 1;
+                        queue.add(n);
+                    }
+                }
+            }
+
+            if (flag) break;
+        }
+
+        bw.write((time[K] - 1) + "\n" + cnt);
         bw.close();
     }
 }
