@@ -36,13 +36,19 @@ public class Main {
             }
         }
 
-        bw.write(visit[K] + "\n");
-        find(parent, K);
-        bw.close();
-    }
+        int[] route = new int[visit[K] + 1];
+        int x = K;
+        for (int i = visit[K]; i >= 0; i--) {
+            route[i] = x;
+            x = parent[x];
+        }
 
-    public static void find(int[] parent, int x) throws IOException {
-        if (x != parent[x]) find(parent, parent[x]);
-        bw.write(x + " ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < route.length; i++) {
+            sb.append(route[i] + " ");
+        }
+
+        bw.write(visit[K] + "\n" + sb);
+        bw.close();
     }
 }
