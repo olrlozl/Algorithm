@@ -3,46 +3,41 @@ import java.util.*;
 
 public class Main {
 
-    public static int bfs (int n, int k) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+
+        Queue<Integer> queue = new LinkedList<>();
         int[] time = new int[100001];
         Arrays.fill(time, Integer.MAX_VALUE);
 
-        Queue<Integer> queue = new LinkedList<>();
+        queue.add(N);
+        time[N] = 0;
 
-        queue.add(n);
-        time[n] = 0;
+        while(!queue.isEmpty()) {
+            int cur = queue.poll();
 
-        while (!queue.isEmpty()) {
-            int now = queue.poll();
-
-            if (0 <= now * 2 && now * 2 < 100001 && time[now * 2] > time[now]) {
-                queue.add(now * 2);
-                time[now * 2] = time[now];
+            if (0 <= cur - 1 && cur - 1 <= 100000 && time[cur - 1] > time[cur] + 1) {
+                queue.add(cur - 1);
+                time[cur - 1] = time[cur] + 1;
             }
-
-            if (0 <= now - 1 && now - 1 < 100001 && time[now - 1] > time[now] + 1) {
-                queue.add(now - 1);
-                time[now - 1] = time[now] + 1;
+            if (0 <= cur + 1 && cur + 1 <= 100000 && time[cur + 1] > time[cur] + 1) {
+                queue.add(cur + 1);
+                time[cur + 1] = time[cur] + 1;
             }
-
-            if (0 <= now + 1 && now + 1 < 100001 && time[now + 1] > time[now] + 1) {
-                queue.add(now + 1);
-                time[now + 1] = time[now] + 1;
+            if (0 <= cur * 2 && cur * 2 <= 100000 && time[cur * 2] > time[cur]) {
+                queue.add(cur * 2);
+                time[cur * 2] = time[cur];
             }
         }
-        return time[k];
-    }
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st;
-
-        st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
-        bw.write(bfs(n, k) + "");
+        bw.write(time[K] + "");
         bw.close();
     }
+
+
 }
