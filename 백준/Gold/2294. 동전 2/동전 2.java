@@ -12,28 +12,22 @@ public class Main {
         int k = Integer.parseInt(st.nextToken()); // 원하는 가치 합
 
         int[] coins = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
             coins[i] = Integer.parseInt(br.readLine());
         }
 
-        int[][] dp = new int[n + 1][k + 1];
-        for (int i = 0; i <= n; i++) {
-            for (int j = 1; j <= k; j++) {
-                dp[i][j] = k + 1;
+        int[] dp = new int[k + 1];
+        for (int i = 1; i <= k; i++) {
+            dp[i] = k + 1;
+        }
+
+        for (int coin: coins) {
+            for (int j = coin; j <= k; j++) {
+                dp[j] = Math.min(dp[j], dp[j - coin] + 1);
             }
         }
 
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= k; j++) {
-                if (j < coins[i]) {
-                    dp[i][j] = dp[i - 1][j];
-                } else {
-                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i]] + 1);
-                }
-            }
-        }
-
-        bw.write((dp[n][k] == k + 1 ? -1 : dp[n][k]) + "");
+        bw.write((dp[k] == k + 1 ? -1 : dp[k]) + "");
         bw.close();
     }
 }
