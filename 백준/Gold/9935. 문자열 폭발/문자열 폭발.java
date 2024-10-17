@@ -10,33 +10,27 @@ public class Main {
         String word = br.readLine();
         String bomb = br.readLine();
 
-        Stack<Character> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < word.length(); i++) {
-            stack.add(word.charAt(i));
+            sb.append(word.charAt(i));
 
-            boolean flag = true;
-            if (bomb.length() <= stack.size()) {
+            if (bomb.length() <= sb.length()) {
+                boolean flag = true;
+
                 for (int j = 0; j < bomb.length(); j++) {
-                    if (bomb.charAt(j) != stack.get(stack.size() - bomb.length() + j)) {
+                    if (bomb.charAt(j) != sb.charAt(sb.length() - bomb.length() + j)) {
                         flag = false;
                         break;
                     }
                 }
                 if (flag) {
-                    for (int j = 0; j < bomb.length(); j++) {
-                        stack.pop();
-                    }
+                    sb.setLength(sb.length() - bomb.length());
                 }
             }
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < stack.size(); i++) {
-            sb.append(stack.get(i));
-        }
-
-        bw.write((stack.size() == 0 ? "FRULA" : sb.toString()) + "");
+        bw.write((sb.length() == 0 ? "FRULA" : sb.toString()) + "");
         bw.close();
     }
 }
