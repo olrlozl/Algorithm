@@ -12,14 +12,7 @@ class Solution {
             perm(src, visit, tgt, 0);
         }
         
-        int cnt = 0;
-        for (int n : set) {
-            if (isPrime(n)) {
-                cnt++;
-            }
-        }
-        
-        return cnt;
+        return set.size();
     }
     
     // 중복 순열
@@ -27,7 +20,7 @@ class Solution {
         if (tgtIdx == tgt.length) {
             int num = 0;
             for (char c : tgt) num += (c - '0') * Math.pow(10, --tgtIdx);
-            set.add(num);
+            if (isPrime(num)) set.add(num);
             return;
         }
         
