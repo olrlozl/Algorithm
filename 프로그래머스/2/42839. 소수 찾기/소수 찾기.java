@@ -1,43 +1,56 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
     public HashSet<Integer> set = new HashSet<>();
     
-    public boolean check(int n) {
-        if (n < 2) return false;
-        for (int i = 2; i <= Math.sqrt(n); i++) if (n % i == 0) return false;
-        return true;
+    public int solution(String numbers) {
+        char[] src = numbers.toCharArray();
+        
+        for (int i = 1; i <= src.length; i++) {
+            boolean[] visit = new boolean[src.length];
+            char[] tgt = new char[i];
+            perm(src, visit, tgt, 0);
+        }
+        
+        int cnt = 0;
+        for (int n : set) {
+            if (isPrime(n)) {
+                cnt++;
+            }
+        }
+        
+        return cnt;
     }
     
-    public void perm(String[] src, String[] tgt, boolean[] select, int tgtIdx) {
-        if (tgt.length == tgtIdx) {
-            String num = "";
-            for (int i = 0; i < tgtIdx; i++) num += tgt[i];
-            if (check(Integer.parseInt(num))) set.add(Integer.parseInt(num));
+    // 중복 순열
+    public void perm(char[] src, boolean[] visit, char[] tgt, int tgtIdx) {
+        if (tgtIdx == tgt.length) {
+            int num = 0;
+            for (char c : tgt) num += (c - '0') * Math.pow(10, --tgtIdx);
+            set.add(num);
             return;
         }
         
-        boolean[] visit = new boolean[10];
+        boolean[] select = new boolean[10];
         for (int i = 0; i < src.length; i++) {
-            if (!select[i] && !visit[Integer.parseInt(src[i])]) {
+            if (!visit[i] && !select[src[i] - '0']) {
                 tgt[tgtIdx] = src[i];
-                visit[Integer.parseInt(src[i])] = true;
-                select[i] = true;
-                perm(src, tgt, select, tgtIdx + 1);
-                select[i] = false;
+                select[src[i] - '0'] = true;
+                visit[i] = true;
+                perm(src, visit, tgt, tgtIdx + 1);
+                visit[i] = false;
             }
         }
     }
     
-    public int solution(String numbers) {
-        String[] src = numbers.split("");
-        
-        for (int i = 1; i <= src.length; i++) {
-            String[] tgt = new String[i];
-            boolean[] select = new boolean[src.length];
-            perm(src, tgt, select, 0);
+    // 소수 판별
+    public boolean isPrime(int n) {
+        if (n < 2) return false;
+        for (int i = 2; i <= (int)Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return false;
+            }
         }
-        return set.size();
+        return true;
     }
 }
