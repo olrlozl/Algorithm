@@ -70,7 +70,7 @@ public class Main {
                 int nr = now.r + delta[now.dir][0] * i;
                 int nc = now.c + delta[now.dir][1] * i;
 
-                if (0 > nr || nr >= M || 0 > nc || nc >= N) continue;
+                if (0 > nr || nr >= M || 0 > nc || nc >= N) break;
                 
                 if (arr[nr][nc] == 0) {
                     if (!visit[nr][nc][now.dir]) {
