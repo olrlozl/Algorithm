@@ -5,26 +5,23 @@ class Solution {
         PriorityQueue<Integer> min = new PriorityQueue<>();
         PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
         
-        for (String o : operations) {
-            int x = Integer.parseInt(o.split(" ")[1]);
-            if (o.charAt(0) == 'I') {
-                min.add(x);
-                max.add(x);
-            } else if (o.charAt(0) == 'D') {
+        for (String operation: operations) {
+            char order = operation.charAt(0);
+            int num = Integer.parseInt(operation.split(" ")[1]);
+            if (order == 'I') {
+                min.add(num);
+                max.add(num);
+            } else {
                 if (min.isEmpty()) continue;
-                if (x == -1) {
-                    max.remove(min.poll());
-                } else if (x == 1) {
+                if (num == 1) {
                     min.remove(max.poll());
+                } else {
+                    max.remove(min.poll());
                 }
             }
         }
         
-        int[] answer = new int[2];
-        if (!min.isEmpty()) {
-            answer[0] = max.peek();
-            answer[1] = min.peek();
-        }
-        return answer;
+        if (min.isEmpty()) return new int[] {0, 0};
+        else return new int[] {max.poll(), min.poll()};
     }
 }
