@@ -1,5 +1,5 @@
 SELECT BOARD_ID, WRITER_ID, TITLE, PRICE, 
-    CASE 
+    CASE
         WHEN STATUS = 'SALE' THEN '판매중'
         WHEN STATUS = 'RESERVED' THEN '예약중'
         WHEN STATUS = 'DONE' THEN '거래완료'
