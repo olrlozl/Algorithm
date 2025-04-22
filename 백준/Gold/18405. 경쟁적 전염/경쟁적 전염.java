@@ -5,7 +5,6 @@ public class Main {
     public static int N;
     public static int[][] arr;
     public static Queue<Virus> q = new LinkedList<>();
-    public static boolean[][] visit;
     public static int[][] delta = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
 
     public static void main(String[] args) throws IOException {
@@ -19,7 +18,6 @@ public class Main {
 
         arr = new int[N][N];
         ArrayList<Virus> list = new ArrayList<>();
-        visit = new boolean[N][N];
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -32,7 +30,7 @@ public class Main {
         }
 
         Collections.sort(list, (a, b) -> a.num - b.num);
-        
+
         for (int i = 0; i < list.size(); i++) {
             q.add(list.get(i));
         }
@@ -54,16 +52,13 @@ public class Main {
     }
 
     public static void bfs(Virus start) {
-        visit[start.r][start.c] = true;
-
         for (int i = 0; i < 4; i++) {
             int nr = start.r + delta[i][0];
             int nc = start.c + delta[i][1];
 
-            if (0 <= nr && nr < N && 0 <= nc && nc < N && !visit[nr][nc] && arr[nr][nc] == 0) {
+            if (0 <= nr && nr < N && 0 <= nc && nc < N && arr[nr][nc] == 0) {
                 arr[nr][nc] = start.num;
                 q.add(new Virus(nr, nc, start.num));
-                visit[nr][nc] = true;
             }
         }
     }
