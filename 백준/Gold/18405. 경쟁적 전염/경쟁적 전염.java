@@ -4,9 +4,8 @@ import java.util.*;
 public class Main {
     public static int N;
     public static int[][] arr;
+    public static Queue<Virus> q = new LinkedList<>();
     public static boolean[][] visit;
-    public static PriorityQueue<Virus> pq;
-    public static ArrayList<Virus> newVirus;
     public static int[][] delta = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
 
     public static void main(String[] args) throws IOException {
@@ -19,17 +18,23 @@ public class Main {
         int K = Integer.parseInt(st.nextToken());
 
         arr = new int[N][N];
+        ArrayList<Virus> list = new ArrayList<>();
         visit = new boolean[N][N];
-        pq = new PriorityQueue<>();
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
                 if (arr[i][j] != 0) {
-                    pq.add(new Virus(i, j, arr[i][j]));
+                    list.add(new Virus(i, j, arr[i][j]));
                 }
             }
+        }
+
+        Collections.sort(list, (a, b) -> a.num - b.num);
+        
+        for (int i = 0; i < list.size(); i++) {
+            q.add(list.get(i));
         }
 
         st = new StringTokenizer(br.readLine());
@@ -38,14 +43,9 @@ public class Main {
         int Y = Integer.parseInt(st.nextToken()) - 1;
 
         for (int i = 0; i < S; i++) {
-            int len = pq.size();
-            newVirus = new ArrayList<>();
+            int len = q.size();
             for (int j = 0; j < len; j++) {
-                Virus virus = pq.poll();
-                bfs(virus);
-            }
-            for (int j = 0; j < newVirus.size(); j++) {
-                pq.add(newVirus.get(j));
+                bfs(q.poll());
             }
         }
 
@@ -62,13 +62,13 @@ public class Main {
 
             if (0 <= nr && nr < N && 0 <= nc && nc < N && !visit[nr][nc] && arr[nr][nc] == 0) {
                 arr[nr][nc] = start.num;
-                newVirus.add(new Virus(nr, nc, start.num));
+                q.add(new Virus(nr, nc, start.num));
                 visit[nr][nc] = true;
             }
         }
     }
 
-    public static class Virus implements Comparable<Virus> {
+    public static class Virus {
         int r;
         int c;
         int num;
@@ -77,11 +77,6 @@ public class Main {
             this.r = r;
             this.c = c;
             this.num = num;
-        }
-
-        @Override
-        public int compareTo(Virus v) {
-            return this.num - v.num;
         }
     }
 }
