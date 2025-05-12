@@ -5,10 +5,9 @@ public class Main {
     public static int N, C;
     public static char[] src;
     public static boolean[] select;
-    public static TreeSet<String> treeSet = new TreeSet<>();
+    public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static void main(String[] args) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
@@ -27,13 +26,10 @@ public class Main {
 
         comb(0, 0);
 
-        for (String t : treeSet) {
-            bw.write(t + "\n");
-        }
         bw.close();
     }
 
-    public static void comb(int startIdx, int tgtCnt) {
+    public static void comb(int startIdx, int tgtCnt) throws IOException {
         if (tgtCnt == N) {
             addPW();
             return;
@@ -48,7 +44,7 @@ public class Main {
         }
     }
 
-    public static void addPW() {
+    public static void addPW() throws IOException {
         int cnt = 0;
         for (int i = 0; i < C; i++) {
             if (select[i]) {
@@ -63,7 +59,7 @@ public class Main {
                     sb.append(src[i]);
                 }
             }
-            treeSet.add(sb.toString());
+            bw.write(sb.toString() + "\n");
         }
     }
 }
