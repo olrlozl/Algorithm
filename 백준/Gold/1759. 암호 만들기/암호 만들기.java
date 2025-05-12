@@ -7,7 +7,6 @@ public class Main {
     public static boolean[] select;
     public static TreeSet<String> treeSet = new TreeSet<>();
 
-
     public static void main(String[] args) throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,9 +25,7 @@ public class Main {
         }
         Arrays.sort(src);
 
-        for (int i = 1; i <= N - 2; i++) {
-            comb(0, i, N - i, 0, 0);
-        }
+        comb(0, 0);
 
         for (String t : treeSet) {
             bw.write(t + "\n");
@@ -36,34 +33,37 @@ public class Main {
         bw.close();
     }
 
-    public static void comb(int startIdx, int M, int J, int curM, int curJ) {
-        if (curM == M && curJ == J) {
+    public static void comb(int startIdx, int tgtCnt) {
+        if (tgtCnt == N) {
             addPW();
             return;
         }
 
         for (int i = startIdx; i < C; i++) {
             if (!select[i]) {
-                if ("aeiou".indexOf(src[i]) != -1 && curM < M) {
-                    select[i] = true;
-                    comb(i + 1, M, J, curM + 1, curJ);
-                    select[i] = false;
-                } else if ("aeiou".indexOf(src[i]) == -1 && curJ < J) {
-                    select[i] = true;
-                    comb(i + 1, M, J, curM, curJ + 1);
-                    select[i] = false;
-                }
+                select[i] = true;
+                comb(i + 1, tgtCnt + 1);
+                select[i] = false;
             }
         }
     }
 
     public static void addPW() {
-        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
         for (int i = 0; i < C; i++) {
             if (select[i]) {
-                sb.append(src[i]);
+                if ("aeiou".indexOf(src[i]) != -1) cnt++;
             }
         }
-        treeSet.add(sb.toString());
+
+        if (cnt >= 1 && N - cnt >= 2) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < C; i++) {
+                if (select[i]) {
+                    sb.append(src[i]);
+                }
+            }
+            treeSet.add(sb.toString());
+        }
     }
 }
