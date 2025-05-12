@@ -59,7 +59,7 @@ public class Main {
                     sb.append(src[i]);
                 }
             }
-            bw.write(sb.toString() + "\n");
+            bw.write(sb + "\n");
         }
     }
 }
