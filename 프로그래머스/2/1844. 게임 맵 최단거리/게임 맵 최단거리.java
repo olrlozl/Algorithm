@@ -7,12 +7,9 @@ class Solution {
     }
     
     public int bfs(int[][] maps) {
-        int[][] delta = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+        int[][] delta = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
         Queue<Point> queue = new LinkedList<>();
-        boolean[][] visit = new boolean[maps.length][maps[0].length];
-        
         queue.add(new Point(0, 0));
-        visit[0][0] = true;
         
         while(!queue.isEmpty()) {
             Point now = queue.poll();
@@ -23,9 +20,8 @@ class Solution {
                 int nr = now.x + delta[i][0];
                 int nc = now.y + delta[i][1];
                 if (0 <= nr && nr < maps.length && 0 <= nc && nc < maps[0].length 
-                    && maps[nr][nc] != 0 && !visit[nr][nc]) {
+                    && maps[nr][nc] == 1) {
                     queue.add(new Point(nr, nc));
-                    visit[nr][nc] = true;
                     maps[nr][nc] = maps[now.x][now.y] + 1;
                 }
             }
