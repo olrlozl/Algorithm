@@ -1,7 +1,6 @@
 import java.util.*;
 
 class Solution {
-    public int cnt = 0;
     public HashSet<Integer> set = new HashSet<>();
     
     public int solution(String numbers) {
@@ -13,18 +12,15 @@ class Solution {
             perm(src, tgt, visit, 0);
         }
         
-        for (int n : set) {
-            if (isPrime(n)) cnt++;
-        }
-            
-        return cnt;
+        return set.size();
     }
     
     public void perm(char[] src, char[] tgt, boolean[] visit, int tgtIdx) {
         if (tgtIdx == tgt.length) {
             StringBuilder sb = new StringBuilder();
             for (char c : tgt) sb.append(c);
-            set.add(Integer.parseInt(sb.toString()));
+            int num = Integer.parseInt(sb.toString());
+            if (isPrime(num)) set.add(num);
             return;
         }
         
