@@ -2,33 +2,52 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] jobs) {
-        int answer = 0;
-        int count = 0; // 완료된 작업 수
-        int jobIdx = 0; // 작업 번호 (요청시각 빠른 순)
-        int end = 0; // 작업 완료 시각
+        int[] endTime = new int[jobs.length];
         
+        Arrays.sort(jobs, (a, b) -> a[0] - b[0]); // 요청시각이 빠른 순 정렬
         
-        // 요청시각 오름차순
-        Arrays.sort(jobs, (a, b) -> a[0] - b[0]);
+        PriorityQueue<Work> pq = new PriorityQueue<>();
+        int curTime = 0;
+        int curIdx = 0;
+        int finish = 0;
         
-        // 소요시간 오름차순
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        
-        while (count < jobs.length) {
-            while (jobIdx < jobs.length && jobs[jobIdx][0] <= end) {
-                pq.add(jobs[jobIdx++]);
+        while (finish < jobs.length) {
+            while (curIdx < jobs.length && jobs[curIdx][0] <= curTime) {
+                pq.add(new Work(curIdx, jobs[curIdx][0], jobs[curIdx][1]));
+                curIdx++;
             }
-            
-            if (pq.isEmpty()) {
-                end = jobs[jobIdx][0];
+            if (pq.isEmpty() && curIdx < jobs.length) {
+                curTime++;
             } else {
-                int[] job = pq.poll();
-                end += job[1];
-                answer += end - job[0];
-                count++;
+                Work w = pq.poll();
+                curTime += w.require;
+                endTime[w.idx] = curTime - w.in;
+                finish++;
             }
         }
         
-        return answer / jobs.length;
+        int avg = 0;
+        for (int t : endTime)  avg += t;
+        avg /= jobs.length;
+        return avg;
+    }
+    
+    public class Work implements Comparable<Work>{
+        int idx; // 작업번호
+        int in; // 요청시각
+        int require; // 소요시간
+        
+        public Work (int idx, int in, int require) {
+            this.idx = idx;
+            this.in = in;
+            this.require = require;
+        }
+        
+        @Override
+        public int compareTo(Work o) {
+            if (this.require != o.require) return this.require - o.require;
+            if (this.in != o.in) return this.in - o.in;
+            return this.idx - o.idx;
+        }
     }
 }
