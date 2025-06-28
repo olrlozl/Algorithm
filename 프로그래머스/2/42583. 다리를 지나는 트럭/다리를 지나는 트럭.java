@@ -2,31 +2,37 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
+        int N = truck_weights.length;
+        int onWeight = 0;
+        int onCnt = 0;
+        int passCnt = 0;
+        int idx = 0;
         int time = 0;
-        Queue<Integer> wait = new LinkedList<>(); // 대기 트럭
-        for (int i = 0; i < truck_weights.length; i++) wait.add(truck_weights[i]);
-
-        ArrayList<Integer> cross = new ArrayList<>(); // 다리 건너는 트럭
-        for (int i = 0; i < bridge_length; i++) cross.add(0);
-        int cross_weight = 0; // 다리 건너는 트럭 무게 합
-
-        // 대기 트럭이 없을 때까지
-        while (!wait.isEmpty()) {
-            // 다리 끝 지점에 있던 트럭 탈출
-            cross_weight -= cross.get(bridge_length - 1);
-            cross.remove(bridge_length - 1);
-
-            // 대기 트럭이 출발 가능 하다면
-            if (cross_weight + wait.peek() <= weight) {
-                cross_weight += wait.peek();
-                cross.add(0, wait.poll());
+        
+        Queue<Integer> bridge = new LinkedList<>();
+        for (int i = 0; i < bridge_length; i++) bridge.add(0);
+        
+        while (passCnt < N) {
+            // 다리를 빠져나올 트럭이 있다면
+            if (bridge.peek() > 0) {
+                onWeight -= bridge.peek();
+                onCnt--;
+                passCnt++;
             }
-            // 대기 트럭이 출발 불가능 하다면
-            else cross.add(0, 0);
-
+            // 한 칸씩 이동
+            bridge.poll();
+            
+            // 새로운 트럭이 건널 수 있다면
+            if (idx < N && onCnt < bridge_length && onWeight + truck_weights[idx] <= weight) {
+                bridge.add(truck_weights[idx]);
+                onWeight += truck_weights[idx++];
+                onCnt++;
+            } else {
+                bridge.add(0);
+            }
             time++;
         }
-        // 현재, 마지막 대기 트럭이 다리 시작 지점에 있는 상황.
-        return time + bridge_length;
+    
+        return time;
     }
 }
