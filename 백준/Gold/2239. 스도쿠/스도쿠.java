@@ -1,24 +1,33 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
-    public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    public static int[][] arr = new int[9][9];
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static int[][] arr = new int[9][9];
+    static boolean[][] row = new boolean[9][10];
+    static boolean[][] col = new boolean[9][10];
+    static boolean[][] box = new boolean[9][10];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-
         for (int i = 0; i < 9; i++) {
             String line = br.readLine();
             for (int j = 0; j < 9; j++) {
-                arr[i][j] = line.charAt(j) - '0';
+                int n = line.charAt(j) - '0';
+                arr[i][j] = n;
+
+                if (n > 0) {
+                    row[i][n] = true;
+                    col[j][n] = true;
+                    box[(i / 3) * 3 + (j / 3)][n] = true;
+                }
             }
         }
-        func(0);
+
+        dfs(0);
     }
 
-    public static void func(int num) throws IOException {
+    public static void dfs(int num) throws IOException {
         if (num == 81) {
             for (int i = 0; i < 9; i++) {
                 StringBuilder sb = new StringBuilder();
@@ -33,35 +42,23 @@ public class Main {
 
         int r = num / 9;
         int c = num % 9;
+        int b = (r / 3) * 3 + (c / 3);
 
         if (arr[r][c] > 0) {
-            func(num + 1);
+            dfs(num + 1);
             return;
         }
 
         for (int n = 1; n <= 9; n++) {
-            if (isPossible(r, c, n)) {
+            if (!row[r][n] && !col[c][n] && !box[b][n]) {
+                row[r][n] = col[c][n] = box[b][n] = true;
                 arr[r][c] = n;
-                func(num + 1);
+
+                dfs(num + 1);
+
+                row[r][n] = col[c][n] = box[b][n] = false;
                 arr[r][c] = 0;
             }
         }
-    }
-
-    public static boolean isPossible(int r, int c, int n) {
-        for (int i = 0; i < 9; i++) {
-            if (arr[r][i] == n) return false;
-            if (arr[i][c] == n) return false;
-        }
-
-        int sr = r - r % 3;
-        int sc = c - c % 3;
-
-        for (int i = sr; i < sr + 3; i++) {
-            for (int j = sc; j < sc + 3; j++) {
-                if (arr[i][j] == n) return false;
-            }
-        }
-        return true;
     }
 }
