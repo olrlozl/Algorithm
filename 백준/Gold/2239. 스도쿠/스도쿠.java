@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.*;
+import java.awt.*;
 
 public class Main {
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -6,6 +8,7 @@ public class Main {
     static boolean[][] row = new boolean[9][10];
     static boolean[][] col = new boolean[9][10];
     static boolean[][] box = new boolean[9][10];
+    static ArrayList<Point> blanks = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,7 +19,9 @@ public class Main {
                 int n = line.charAt(j) - '0';
                 arr[i][j] = n;
 
-                if (n > 0) {
+                if (n == 0){
+                    blanks.add(new Point(i, j));
+                } else {
                     row[i][n] = true;
                     col[j][n] = true;
                     box[(i / 3) * 3 + (j / 3)][n] = true;
@@ -27,8 +32,8 @@ public class Main {
         dfs(0);
     }
 
-    public static void dfs(int num) throws IOException {
-        if (num == 81) {
+    public static void dfs(int idx) throws IOException {
+        if (idx == blanks.size()) {
             for (int i = 0; i < 9; i++) {
                 StringBuilder sb = new StringBuilder();
                 for (int j = 0; j < 9; j++) {
@@ -40,12 +45,12 @@ public class Main {
             System.exit(0);
         }
 
-        int r = num / 9;
-        int c = num % 9;
+        int r = blanks.get(idx).x;
+        int c = blanks.get(idx).y;
         int b = (r / 3) * 3 + (c / 3);
 
         if (arr[r][c] > 0) {
-            dfs(num + 1);
+            dfs(idx + 1);
             return;
         }
 
@@ -54,7 +59,7 @@ public class Main {
                 row[r][n] = col[c][n] = box[b][n] = true;
                 arr[r][c] = n;
 
-                dfs(num + 1);
+                dfs(idx + 1);
 
                 row[r][n] = col[c][n] = box[b][n] = false;
                 arr[r][c] = 0;
