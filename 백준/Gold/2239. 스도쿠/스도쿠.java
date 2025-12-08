@@ -3,7 +3,6 @@ import java.util.*;
 import java.awt.*;
 
 public class Main {
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static int[][] arr = new int[9][9];
     static boolean[][] row = new boolean[9][10];
     static boolean[][] col = new boolean[9][10];
@@ -32,16 +31,15 @@ public class Main {
         dfs(0);
     }
 
-    public static void dfs(int idx) throws IOException {
+    public static void dfs(int idx) {
         if (idx == blanks.size()) {
             for (int i = 0; i < 9; i++) {
                 StringBuilder sb = new StringBuilder();
                 for (int j = 0; j < 9; j++) {
                     sb.append(arr[i][j]);
                 }
-                bw.write(sb + "\n");
+                System.out.println(sb);
             }
-            bw.close();
             System.exit(0);
         }
 
