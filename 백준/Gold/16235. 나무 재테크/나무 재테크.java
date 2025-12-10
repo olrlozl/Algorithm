@@ -4,8 +4,8 @@ import java.util.*;
 public class Main {
     static int[][] S2D2;
     static int[][] nutrient;
-    static PriorityQueue<Tree> trees = new PriorityQueue<>();
-    static PriorityQueue<Tree> new_trees = new PriorityQueue<>();
+    static Deque<Tree> trees;
+    static Deque<Tree> new_trees = new ArrayDeque<>(); // 번식할 나무
     static ArrayList<Tree> dead = new ArrayList<>();
     static int[][] delta = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
     static int N, M, K;
@@ -19,26 +19,27 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        nutrient = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            Arrays.fill(nutrient[i], 5);
-        }
-
         S2D2 = new int[N][N];
+        nutrient = new int[N][N];
+
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 S2D2[i][j] = Integer.parseInt(st.nextToken());
+                nutrient[i][j] = 5;
             }
         }
 
+        ArrayList<Tree> list = new ArrayList<>();
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int r = Integer.parseInt(st.nextToken()) - 1;
             int c = Integer.parseInt(st.nextToken()) - 1;
             int age = Integer.parseInt(st.nextToken());
-            trees.add(new Tree(r, c, age));
+            list.add(new Tree(r, c, age));
         }
+        Collections.sort(list);
+        trees = new ArrayDeque<>(list);
 
         for (int i = 0; i < K; i++) {
             spring();
@@ -68,13 +69,19 @@ public class Main {
     }
 
     public static void spring() {
-        while (!trees.isEmpty()) {
+        int size = trees.size();
+
+        for (int i = 0; i < size; i++) {
             Tree t = trees.poll();
 
             if (t.age <= nutrient[t.r][t.c]) {
                 nutrient[t.r][t.c] -= t.age;
                 t.age++;
-                new_trees.add(t);
+                trees.add(t);
+
+                if (t.age % 5 == 0) {
+                    new_trees.add(t);
+                }
             } else {
                 dead.add(t);
             }
@@ -82,8 +89,8 @@ public class Main {
     }
 
     public static void summer() {
-        for (Tree tree : dead) {
-            nutrient[tree.r][tree.c] += tree.age / 2;
+        for (Tree t : dead) {
+            nutrient[t.r][t.c] += t.age / 2;
         }
         dead.clear();
     }
@@ -91,16 +98,13 @@ public class Main {
     public static void fall() {
         while (!new_trees.isEmpty()) {
             Tree t = new_trees.poll();
-            trees.add(t);
 
-            if (t.age % 5 == 0) {
-                for (int i = 0; i < 8; i++) {
-                    int nr = t.r + delta[i][0];
-                    int nc = t.c + delta[i][1];
+            for (int i = 0; i < 8; i++) {
+                int nr = t.r + delta[i][0];
+                int nc = t.c + delta[i][1];
 
-                    if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
-                    trees.add(new Tree(nr, nc, 1));
-                }
+                if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+                trees.addFirst(new Tree(nr, nc, 1)); // 맨 앞에 넣어서 정렬 맞추기
             }
         }
     }
