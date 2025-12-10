@@ -4,7 +4,8 @@ import java.util.*;
 public class Main {
     static int[][] S2D2;
     static int[][] nutrient;
-    static PriorityQueue<Integer>[][] treeAge;
+    static PriorityQueue<Tree> trees = new PriorityQueue<>();
+    static PriorityQueue<Tree> new_trees = new PriorityQueue<>();
     static ArrayList<Tree> dead = new ArrayList<>();
     static int[][] delta = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
     static int N, M, K;
@@ -31,19 +32,12 @@ public class Main {
             }
         }
 
-        treeAge = new PriorityQueue[N][N];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                treeAge[i][j] = new PriorityQueue<>();
-            }
-        }
-
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int r = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
+            int r = Integer.parseInt(st.nextToken()) - 1;
+            int c = Integer.parseInt(st.nextToken()) - 1;
             int age = Integer.parseInt(st.nextToken());
-            treeAge[r - 1][c - 1].add(age);
+            trees.add(new Tree(r, c, age));
         }
 
         for (int i = 0; i < K; i++) {
@@ -53,10 +47,10 @@ public class Main {
             winter();
         }
 
-        System.out.println(count());
+        System.out.println(trees.size());
     }
 
-    public static class Tree {
+    public static class Tree implements Comparable<Tree> {
         int r;
         int c;
         int age;
@@ -66,25 +60,23 @@ public class Main {
             this.c = c;
             this.age = age;
         }
+
+        @Override
+        public int compareTo(Tree o) {
+            return this.age - o.age;
+        }
     }
 
     public static void spring() {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                PriorityQueue<Integer> newPQ = new PriorityQueue<>();
+        while (!trees.isEmpty()) {
+            Tree t = trees.poll();
 
-                while (!treeAge[i][j].isEmpty()) {
-                    int age = treeAge[i][j].poll();
-
-                    if (age <= nutrient[i][j]) {
-                        nutrient[i][j] -= age;
-                        newPQ.add(age + 1);
-                    } else {
-                        dead.add(new Tree(i, j, age));
-                    }
-                }
-
-                treeAge[i][j] = newPQ;
+            if (t.age <= nutrient[t.r][t.c]) {
+                nutrient[t.r][t.c] -= t.age;
+                t.age++;
+                new_trees.add(t);
+            } else {
+                dead.add(t);
             }
         }
     }
@@ -97,19 +89,17 @@ public class Main {
     }
 
     public static void fall() {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        while (!new_trees.isEmpty()) {
+            Tree t = new_trees.poll();
+            trees.add(t);
 
-                for (int age : treeAge[i][j]) {
-                    if (age % 5 != 0) continue;
+            if (t.age % 5 == 0) {
+                for (int i = 0; i < 8; i++) {
+                    int nr = t.r + delta[i][0];
+                    int nc = t.c + delta[i][1];
 
-                    for (int k = 0; k < 8; k++) {
-                        int nr = i + delta[k][0];
-                        int nc = j + delta[k][1];
-
-                        if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
-                        treeAge[nr][nc].add(1);
-                    }
+                    if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+                    trees.add(new Tree(nr, nc, 1));
                 }
             }
         }
@@ -121,15 +111,5 @@ public class Main {
                 nutrient[i][j] += S2D2[i][j];
             }
         }
-    }
-
-    public static int count() {
-        int cnt = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                cnt += treeAge[i][j].size();
-            }
-        }
-        return cnt;
     }
 }
