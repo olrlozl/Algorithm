@@ -5,7 +5,7 @@ public class Main {
     static int[][] S2D2;
     static int[][] nutrient;
     static Deque<Tree> trees;
-    static Deque<Tree> new_trees = new ArrayDeque<>(); // 번식할 나무
+    static Queue<Tree> new_trees = new LinkedList<>(); // 번식할 나무
     static ArrayList<Tree> dead = new ArrayList<>();
     static int[][] delta = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
     static int N, M, K;
