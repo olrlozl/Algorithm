@@ -9,7 +9,6 @@ public class Main {
     static int texiC;
     static int[][] passenger; // 출발지, 도착지
     static int[][] pidMap; // 승객 id, 없으면 -1
-    static boolean[] arrive; // 승객 도착 여부
     static int[][] delta = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     static int nearestP; // 가장 가까운 손님
     static int minDist; // 가장 가까운 손님과의 거리
@@ -25,7 +24,6 @@ public class Main {
 
         arr = new int[N][N];
         passenger = new int[M][4];
-        arrive = new boolean[M];
         pidMap = new int[N][N];
         for (int i = 0; i < N; i++) Arrays.fill(pidMap[i], -1);
 
@@ -80,9 +78,9 @@ public class Main {
             int pid = pidMap[r][c];
             int d = dist[r][c] - 1;
 
-            if (d > minDist) break;
+            if (d > minDist) break; // 더 먼 거리의 승객은 볼 필요 없음
 
-            if (pid != -1 && !arrive[pid]) {
+            if (pid != -1) {
                 if (minDist == Integer.MAX_VALUE) minDist = d;
                 if (r < bestR || (r == bestR && c < bestC)) {
                     bestR = r;
@@ -143,7 +141,6 @@ public class Main {
                     fuel += dist[er][ec] - 1;
                     texiR = er;
                     texiC = ec;
-                    arrive[nearestP] = true;
                 } else {
                     System.out.println(-1);
                     System.exit(0);
