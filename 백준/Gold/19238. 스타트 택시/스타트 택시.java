@@ -1,12 +1,12 @@
 import java.io.*;
 import java.util.*;
-import java.awt.*;
 
 public class Main {
     static int N, M;
     static long fuel;
     static int[][] arr;
-    static Point texi = new Point();
+    static int texiR;
+    static int texiC;
     static int[][] passenger; // 출발지, 도착지
     static int[][] pidMap; // 승객 id, 없으면 -1
     static boolean[] arrive; // 승객 도착 여부
@@ -37,8 +37,8 @@ public class Main {
         }
 
         st = new StringTokenizer(br.readLine());
-        texi.x = Integer.parseInt(st.nextToken()) - 1;
-        texi.y = Integer.parseInt(st.nextToken())- 1;
+        texiR = Integer.parseInt(st.nextToken()) - 1;
+        texiC = Integer.parseInt(st.nextToken())- 1;
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
@@ -67,34 +67,36 @@ public class Main {
         int bestR = Integer.MAX_VALUE;
         int bestC = Integer.MAX_VALUE;
 
-        Queue<Point> queue = new LinkedList<>();
+        ArrayDeque<int[]> queue = new ArrayDeque<>();
         int[][] dist = new int[N][N];
 
-        queue.add(new Point(texi.x, texi.y));
-        dist[texi.x][texi.y] = 1;
+        queue.add(new int[]{texiR, texiC});
+        dist[texiR][texiC] = 1;
 
         while(!queue.isEmpty()) {
-            Point p = queue.poll();
-            int pid = pidMap[p.x][p.y];
-            int d = dist[p.x][p.y] - 1;
+            int[] cur = queue.poll();
+            int r = cur[0];
+            int c = cur[1];
+            int pid = pidMap[r][c];
+            int d = dist[r][c] - 1;
 
-            if (d > minDist) break; // 더 먼 거리의 승객은 볼 필요 없음
+            if (d > minDist) break;
 
             if (pid != -1 && !arrive[pid]) {
                 if (minDist == Integer.MAX_VALUE) minDist = d;
-                if (p.x < bestR || (p.x == bestR && p.y < bestC)) {
-                    bestR = p.x;
-                    bestC = p.y;
+                if (r < bestR || (r == bestR && c < bestC)) {
+                    bestR = r;
+                    bestC = c;
                     nearestP = pid;
                 }
             }
 
             for (int j = 0; j < 4; j++) {
-                int nr = p.x + delta[j][0];
-                int nc = p.y + delta[j][1];
+                int nr = r + delta[j][0];
+                int nc = c + delta[j][1];
                 if (0 <= nr && nr < N && 0 <= nc && nc < N && arr[nr][nc] == 0 && dist[nr][nc] == 0) {
-                    queue.add(new Point(nr, nc));
-                    dist[nr][nc] = dist[p.x][p.y] + 1;
+                    queue.add(new int[]{nr, nc});
+                    dist[nr][nc] = dist[r][c] + 1;
                 }
             }
         }
@@ -110,8 +112,8 @@ public class Main {
             fuel -= minDist;
             int sr = passenger[nearestP][0];
             int sc = passenger[nearestP][1];
-            texi.x = sr;
-            texi.y = sc;
+            texiR = sr;
+            texiC = sc;
             pidMap[sr][sc] = -1;
         } else {
             System.out.println(-1);
@@ -126,19 +128,21 @@ public class Main {
         int er = passenger[nearestP][2];
         int ec = passenger[nearestP][3];
 
-        Queue<Point> queue = new LinkedList<>();
+        ArrayDeque<int[]> queue = new ArrayDeque<>();
         int[][] dist = new int[N][N];
 
-        queue.add(new Point(sr, sc));
+        queue.add(new int[]{sr, sc});
         dist[sr][sc] = 1;
 
         while(!queue.isEmpty()) {
-            Point p = queue.poll();
-            if (p.x == er && p.y == ec) {
+            int[] cur = queue.poll();
+            int r = cur[0];
+            int c = cur[1];
+            if (r == er && c == ec) {
                 if (fuel >= dist[er][ec] - 1) {
                     fuel += dist[er][ec] - 1;
-                    texi.x = er;
-                    texi.y = ec;
+                    texiR = er;
+                    texiC = ec;
                     arrive[nearestP] = true;
                 } else {
                     System.out.println(-1);
@@ -148,11 +152,11 @@ public class Main {
             }
 
             for (int i = 0; i < 4; i++) {
-                int nr = p.x + delta[i][0];
-                int nc = p.y + delta[i][1];
+                int nr = r + delta[i][0];
+                int nc = c + delta[i][1];
                 if (0 <= nr && nr < N && 0 <= nc && nc < N && arr[nr][nc] == 0 && dist[nr][nc] == 0) {
-                    queue.add(new Point(nr, nc));
-                    dist[nr][nc] = dist[p.x][p.y] + 1;
+                    queue.add(new int[]{nr, nc});
+                    dist[nr][nc] = dist[r][c] + 1;
                 }
             }
         }
