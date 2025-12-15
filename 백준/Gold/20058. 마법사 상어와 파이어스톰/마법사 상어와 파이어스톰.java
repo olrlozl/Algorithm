@@ -37,9 +37,9 @@ public class Main {
                     rotate(r, c, len);
                 }
             }
-            copy(arr, newArr);
+            swap();
             melt();
-            copy(arr, newArr);
+            swap();
         }
 
         calculate();
@@ -105,12 +105,10 @@ public class Main {
         maxSize = Math.max(maxSize, size);
     }
 
-    public static void copy(int[][] arr, int[][] newArr) {
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < M; j++) {
-                arr[i][j] = newArr[i][j];
-            }
-        }
+    public static void swap() {
+        int[][] tmp = arr;
+        arr = newArr;
+        newArr = tmp;
     }
 }
 
