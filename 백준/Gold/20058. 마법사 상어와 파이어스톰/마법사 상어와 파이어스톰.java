@@ -31,7 +31,6 @@ public class Main {
         for (int i = 0; i < Q; i++) {
             int level = Integer.parseInt(st.nextToken());
             int len = (int) Math.pow(2, level);
-            newArr = new int[M][M];
             for (int r = 0; r < M; r += len) {
                 for (int c = 0; c < M; c += len) {
                     rotate(r, c, len);
@@ -56,10 +55,12 @@ public class Main {
     }
 
     public static void melt() {
-        newArr = new int[M][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < M; c++) {
-                if (arr[r][c] == 0) continue;
+                if (arr[r][c] == 0) {
+                    newArr[r][c] = 0;
+                    continue;
+                }
                 int cnt = 0;
                 for (int d = 0; d < 4; d++) {
                     int nr = r + dr[d];
