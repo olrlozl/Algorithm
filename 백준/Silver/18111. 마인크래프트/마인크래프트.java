@@ -2,19 +2,19 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
 
         st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken()); // 세로
-        int M = Integer.parseInt(st.nextToken()); // 가로
-        int B = Integer.parseInt(st.nextToken()); // 초기 인벤토리 속 블록 수
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
 
         int[][] arr = new int[N][M];
-        int min = 1000;
-        int max = 0;
+        int min = Integer.MAX_VALUE;
+        int max = -1;
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -26,31 +26,32 @@ public class Main {
         }
 
         int minTime = Integer.MAX_VALUE;
-        int maxHeight = 0;
-        int height = min;
+        int height = 0;
 
-        while (height <= max) {
-            int B_copy = B;
-            int time = 0;
+        for (int h = min; h <= max; h++) {
+            int b = B;
+            int t = 0;
+
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < M; j++) {
-                    if (height < arr[i][j]) {
-                        time += (arr[i][j] - height) * 2;
-                        B_copy += arr[i][j] - height;
-                    } else if (height > arr[i][j]){
-                        time += height - arr[i][j];
-                        B_copy -= height - arr[i][j];;
+                    if (arr[i][j] < h) {
+                        t += h - arr[i][j];
+                        b -= h - arr[i][j];
+                    } else if (arr[i][j] > h) {
+                        t += 2 * (arr[i][j] - h);
+                        b += arr[i][j] - h;
                     }
                 }
             }
-            if (B_copy >= 0 && time <= minTime) {
-                minTime = time;
-                maxHeight = height;
+
+            if (b < 0) continue;
+
+            if (t < minTime || (t == minTime && height < h)) {
+                minTime = t;
+                height = h;
             }
-            height++;
         }
 
-        bw.write(minTime + " " + maxHeight);
-        bw.close();
+        System.out.println(minTime + " " + height);
     }
 }
