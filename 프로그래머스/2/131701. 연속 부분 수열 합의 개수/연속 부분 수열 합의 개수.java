@@ -3,11 +3,15 @@ import java.util.*;
 class Solution {
     public int solution(int[] elements) {
         HashSet<Integer> set = new HashSet<>();
-        int[] dp = new int[elements.length];
-        for (int len = 1; len <= elements.length; len++) {
-            for (int i = 0; i < elements.length; i++) {
-                dp[i] += elements[(i+len-1) % elements.length];
-                set.add(dp[i]);
+        int N = elements.length;
+        
+        for (int i = 1; i <= N; i++) { // 길이
+            for (int j = 0; j < N; j++) { // 시작 인덱스
+                int sum = 0;
+                for (int k = 0; k < i; k++) {
+                    sum += elements[(j + k) % N];
+                }
+                set.add(sum);
             }
         }
         return set.size();
