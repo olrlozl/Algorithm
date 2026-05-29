@@ -1,28 +1,25 @@
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int[] result = {0, sequence.length};
+        int N = sequence.length;
+        int[] answer = {0, N - 1};
+        int sum = sequence[0], l = 0, r = 0;
         
-        int sum = sequence[0];
-        int l = 0;
-        int r = 0;
-        
-        while (true) {
+        while (l <= r && r < N) {
             if (sum == k) {
-                if (result[1] - result[0] > r - l) {
-                    result[0] = l;
-                    result[1] = r;
+                if (answer[1] - answer[0] > r - l) {
+                    answer[0] = l;
+                    answer[1] = r;
                 }
-                sum -= sequence[l++];
-            } 
-            else if (sum < k) {
-                if (r == sequence.length - 1) break;
+                if (r == N - 1) break;
+                sum += sequence[++r] - sequence[l++];
+            } else if (sum < k) {
+                if (r == N - 1) break;
                 sum += sequence[++r];
-            } 
-            else {
+            } else {
                 sum -= sequence[l++];
             }
         }
         
-        return result;
+        return answer;
     }
 }
