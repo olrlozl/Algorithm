@@ -1,17 +1,15 @@
 class Solution {
     public int solution(String name) {
-        int UpDown = 0;
-        int LeftRight = name.length() - 1; // 0 -> last
-
+        int answer = name.length() - 1;
+        int cnt = 0;
+        
         for (int i = 0; i < name.length(); i++) {
-            UpDown += Math.min(name.charAt(i) - 'A', 'Z' - name.charAt(i) + 1);
-            int endA = i + 1;
-            while (endA < name.length() && name.charAt(endA) == 'A') {
-                endA++;
-            }
-            LeftRight = Math.min(LeftRight, i * 2 + (name.length() - endA)); // 0 -> i -> 0 -> last -> endA
-            LeftRight = Math.min(LeftRight, (name.length() - endA) * 2 + i); // 0 -> last -> endA -> last -> 0 -> i
+            cnt += Math.min(name.charAt(i) - 'A', 26 - name.charAt(i) + 'A');
+            int idx = i + 1;
+            while (idx < name.length() && name.charAt(idx) == 'A') idx++;
+            answer = Math.min(answer, i * 2 + name.length() - idx);
+            answer = Math.min(answer, (name.length() - idx) * 2 + i);
         }
-        return UpDown + LeftRight;
+        return answer + cnt;
     }
 }

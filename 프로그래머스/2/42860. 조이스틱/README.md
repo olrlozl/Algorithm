@@ -1,10 +1,10 @@
 # [level 2] 조이스틱 - 42860 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42860) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42860#) 
 
 ### 성능 요약
 
-메모리: 70.6 MB, 시간: 0.03 ms
+메모리: 63.3 MB, 시간: 0.05 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2023년 10월 1일 17:9:2
+2026년 06월 02일 15:42:53
 
 ### 문제 설명
 
