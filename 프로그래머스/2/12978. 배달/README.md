@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 87.3 MB, 시간: 3.24 ms
+메모리: 75.2 MB, 시간: 2.31 ms
 
 ### 구분
 
@@ -16,13 +16,13 @@
 
 ### 제출 일자
 
-2025년 05월 15일 23:06:24
+2026년 06월 09일 11:41:08
 
 ### 문제 설명
 
 <p>N개의 마을로 이루어진 나라가 있습니다. 이 나라의 각 마을에는 1부터 N까지의 번호가 각각 하나씩 부여되어 있습니다. 각 마을은 양방향으로 통행할 수 있는 도로로 연결되어 있는데, 서로 다른 마을 간에 이동할 때는 이 도로를 지나야 합니다. 도로를 지날 때 걸리는 시간은 도로별로 다릅니다. 현재 1번 마을에 있는 음식점에서 각 마을로 음식 배달을 하려고 합니다. 각 마을로부터 음식 주문을 받으려고 하는데, N개의 마을 중에서 K 시간 이하로 배달이 가능한 마을에서만 주문을 받으려고 합니다. 다음은 N = 5, K = 3인 경우의 예시입니다.</p>
 
-<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/d7779d88-084c-4ffa-ae9f-2a42f97d3bbf/%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF_1_uxun8t.png" title="" alt="배달_1_uxun8t.png"></p>
+<p><img src="https://asset.programmers.co.kr/files/production/d7779d88-084c-4ffa-ae9f-2a42f97d3bbf/%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF_1_uxun8t.png" title="" alt="배달_1_uxun8t.png"></p>
 
 <p>위 그림에서 1번 마을에 있는 음식점은 [1, 2, 4, 5] 번 마을까지는 3 이하의 시간에 배달할 수 있습니다. 그러나 3번 마을까지는 3시간 이내로 배달할 수 있는 경로가 없으므로 3번 마을에서는 주문을 받지 않습니다. 따라서 1번 마을에 있는 음식점이 배달 주문을 받을 수 있는 마을은 4개가 됩니다.<br>
 마을의 개수 N, 각 마을을 연결하는 도로의 정보 road, 음식 배달이 가능한 시간 K가 매개변수로 주어질 때, 음식 주문을 받을 수 있는 마을의 개수를 return 하도록 solution 함수를 완성해주세요.</p>
@@ -77,7 +77,7 @@
 
 <p>입출력 예 #2<br>
 주어진 마을과 도로의 모양은 아래 그림과 같습니다.<br>
-<img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/993685f2-6b97-4fe3-85b5-47c085dc1bf3/%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF_3_njc7kq.png" title="" alt="배달_3_njc7kq.png"><br>
+<img src="https://asset.programmers.co.kr/files/production/993685f2-6b97-4fe3-85b5-47c085dc1bf3/%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF_3_njc7kq.png" title="" alt="배달_3_njc7kq.png"><br>
 1번 마을에서 배달에 4시간 이하가 걸리는 마을은 [1, 2, 3, 5] 4개이므로 4를 return 합니다.</p>
 
 
