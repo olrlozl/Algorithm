@@ -2,12 +2,10 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[][] edge) {
-        int cnt = 0;
+        int answer = 0;
         
         ArrayList<Integer>[] graph = new ArrayList[n + 1];
-        for (int i = 0; i <= n; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        for (int i = 0; i < n + 1; i++) graph[i] = new ArrayList<>();
         
         for (int[] e : edge) {
             graph[e[0]].add(e[1]);
@@ -20,14 +18,14 @@ class Solution {
         queue.add(1);
         visit[1] = true;
         
-        while(!queue.isEmpty()) {
-            int len = queue.size();
-            cnt = len;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            answer = size;
             
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < size; i++) {
                 int now = queue.poll();
-            
-                for (int next : graph[now]) {
+                
+                for (int next: graph[now]) {
                     if (!visit[next]) {
                         queue.add(next);
                         visit[next] = true;
@@ -35,7 +33,6 @@ class Solution {
                 }
             }
         }
-        
-        return cnt;
+        return answer;
     }
 }
