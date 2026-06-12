@@ -2,14 +2,15 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] triangle) {
-        for (int i = 1; i < triangle.length; i++) {
-            for (int j = 0; j <= i; j++) {
-                triangle[i][j] += Math.max(j == 0 ? 0 : triangle[i - 1][j - 1], j == i ? 0 : triangle[i - 1][j]);
+        int answer = 0;
+        for (int r = 1; r < triangle.length; r++) {
+            for (int c = 0; c < triangle[r].length; c++) {
+                if (c < 1) triangle[r][c] += triangle[r - 1][c];
+                else if (c == r) triangle[r][c] += triangle[r - 1][c - 1];
+                else triangle[r][c] += Math.max(triangle[r - 1][c - 1], triangle[r - 1][c]);
+                if (r == triangle.length - 1) answer = Math.max(answer, triangle[r][c]);
             }
         }
-        
-        int max = 0;
-        for (int n : triangle[triangle.length - 1]) max = Math.max(max, n);
-        return max;
+        return answer;
     }
 }
