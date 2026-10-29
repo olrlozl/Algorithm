@@ -1,10 +1,16 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
     public String solution(String s) {
-        int[] arr = Stream.of(s.split(" ")).mapToInt(Integer::parseInt).toArray();
-        Arrays.sort(arr);
-        return arr[0] + " " + arr[arr.length - 1];
+        String[] arr = s.split(" ");
+        int min = Integer.parseInt(arr[0]);
+        int max = Integer.parseInt(arr[0]);
+        
+        for (String a: arr) {
+            int n = Integer.parseInt(a);
+            min = Math.min(min, n);
+            max = Math.max(max, n);
+        }
+        return min + " " + max;
     }
 }
