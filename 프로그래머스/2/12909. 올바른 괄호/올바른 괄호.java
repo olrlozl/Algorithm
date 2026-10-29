@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    public boolean solution(String s) {
+    boolean solution(String s) {
         Stack<Character> stack = new Stack<>();
         for (Character c : s.toCharArray()) {
             if (c == '(') {
